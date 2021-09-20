@@ -1,6 +1,89 @@
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Icon,
+  IconButton,
+  Image,
+  Input,
+  SimpleGrid,
+  SlideFade,
+  Spacer,
+  Stack,
+  Text,
+  useColorMode,
+} from '@chakra-ui/react'
 import type { NextPage } from 'next'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { IoMdSearch } from 'react-icons/io'
+
+const SearchIcon = () => <Icon as={IoMdSearch} />
+
+type CardProps = {
+  badge?: string
+  image?: string
+  title?: string
+  description?: string
+  button?: string
+}
+const Card = ({ badge, image, title, description, button }: CardProps) => {
+  const { colorMode } = useColorMode()
+  const [isHovered, setIsHovered] = useState(false)
+  return (
+    <Box
+      // w='300px'
+      rounded='20px'
+      overflow='hidden'
+      shadow='xl'
+      // bg={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
+      mt={10}>
+      <Box position='relative'>
+        <Image
+          src={image}
+          alt='Card Image'
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        />
+        <SlideFade in={isHovered}>
+          <Text
+            fontWeight={400}
+            position='absolute'
+            top='0'
+            maxH='200px'
+            // overflow='scroll'
+            bg='gray.800'
+            color='white'>
+            {description || 'No description available'}
+          </Text>
+        </SlideFade>
+      </Box>
+      <Box p={5}>
+        <Stack align='center'>
+          <Badge variant='subtle' colorScheme='blue' rounded='full' px={2}>
+            {badge}
+          </Badge>
+        </Stack>
+        <Stack my={4}>
+          <Text as='h2' fontWeight={700} fontSize='xl' my={2}>
+            {title}
+          </Text>
+        </Stack>
+
+        <Flex>
+          <Spacer />
+          <Button variant='solid' colorScheme='blue' size='sm'>
+            {button}
+          </Button>
+        </Flex>
+      </Box>
+    </Box>
+  )
+}
 
 const Home: NextPage = () => {
   const [movies, setMovies] = useState([])
@@ -22,104 +105,62 @@ const Home: NextPage = () => {
   }, [searchTerm])
 
   const IMG_API = 'https://image.tmdb.org/t/p/w1280'
-  const imageLoader = src => {
-    return `${IMG_API}${src}`
-  }
 
   return (
-    <div>
-      <form onSubmit={e => e.preventDefault()} style={{ height: '20vh' }}>
-        <label htmlFor='search' style={{ padding: '2rem' }}>
-          Search for movies
-        </label>
-        <input
-          type='text'
-          id='search'
-          value={inputTerm}
-          onChange={e => setInputTerm(e.target.value)}
-          style={{ margin: '2rem' }}
-        />
-        <button
-          onClick={() => {
-            setSearchTerm(inputTerm)
-            setInputTerm('')
-          }}
-          style={{ margin: '2rem' }}>
-          Go!
-        </button>
-      </form>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns:
-            'minmax(1fr, 600px) minmax(1fr, 600px) minmax(1fr, 600px)',
-          gridGap: '2rem',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '80vh',
-          padding: '1.5rem',
-          maxWidth: '1900px',
-        }}>
+    <Box>
+      <Heading textAlign='center' fontSize='4rem' py={10}>
+        Movies!
+      </Heading>
+
+      <FormControl
+        id='first-name'
+        p={10}
+        d='flex'
+        flexDir='column'
+        justifyContent='center'
+        onSubmit={() => {
+          setSearchTerm(inputTerm)
+          setInputTerm('')
+        }}
+        alignItems='center'>
+        <FormLabel>Search for movies</FormLabel>
+        <Box d='flex'>
+          <Input
+            placeholder='Ex., Captain Marvel'
+            maxW='400px'
+            value={inputTerm}
+            onChange={e => setInputTerm(e.target.value)}
+          />
+          <IconButton
+            colorScheme='blue'
+            aria-label='Search database'
+            icon={<SearchIcon />}
+            onClick={() => {
+              setSearchTerm(inputTerm)
+              setInputTerm('')
+            }}
+          />
+        </Box>
+      </FormControl>
+      <SimpleGrid spacing={12} columns={3} p={6}>
         {Array.isArray(movies) &&
           movies.map(
             (
               { title, overview, release_date, poster_path, vote_average },
               idx
             ) => (
-              <div
+              <Card
                 key={idx}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'stretch',
-                  alignItems: 'center',
-                  // maxHeight: '600px',
-                  // maxWidth: '600px',
-                  padding: '1rem',
-                  margin: '1rem 0 1rem 0',
-                  borderRadius: '10px',
-                  border: '2px solid #3c3c3c',
-                  // position: 'relative',
-                }}>
-                <h2 style={{ fontSize: '2.5rem' }}>{title}</h2>
-                <div className='image-container' style={{ maxWidth: '300px' }}>
-                  <Image
-                    src={`${IMG_API}${poster_path}`}
-                    alt={`${title} poster`}
-                    layout='fill'
-                    className='image'
-                  />
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    maxWidth: '75ch',
-                    padding: '1rem',
-                  }}>
-                  <p>
-                    {release_date} | {vote_average}
-                  </p>
-                  <p
-                    style={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      fontSize: '1rem',
-                      lineHeight: '1.5rem',
-                      // maxHeight: '3rem',
-                      maxLines: 2,
-                      lineClamp: 2,
-                    }}>
-                    {overview}
-                  </p>
-                </div>
-              </div>
+                title={title}
+                description={overview}
+                image={`${IMG_API}${poster_path}`}
+                badge={vote_average}
+                button='Read more'
+              />
             )
           )}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Box>
   )
 }
 
