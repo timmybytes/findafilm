@@ -2,84 +2,108 @@ import {
   Badge,
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
+  Grid,
   Heading,
   Icon,
   IconButton,
   Image,
   Input,
-  SimpleGrid,
-  SlideFade,
-  Spacer,
-  Stack,
+  Skeleton,
   Text,
-  useColorMode,
 } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 // import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import { BiDislike, BiLike } from 'react-icons/bi'
 import { IoMdSearch } from 'react-icons/io'
 
 const SearchIcon = () => <Icon as={IoMdSearch} />
 
-type CardProps = {
-  badge?: string
-  image?: string
-  title?: string
-  description?: string
-  button?: string
+type MovieCardProps = {
+  badge: string
+  image: string
+  title: string
+  description: string
 }
-const Card = ({ badge, image, title, description, button }: CardProps) => {
-  const { colorMode } = useColorMode()
-  const [isHovered, setIsHovered] = useState(false)
+const MovieCard = ({ badge, image, title, description }: MovieCardProps) => {
+  const [toggle, setToggle] = useState(false)
+  const rating = parseFloat(badge)
+  const getRatingColor = (rating: number) => {
+    // 1-2: red, 2-4: pink, 4-6: orange, 6-8: blue, 8-10: green
+    if (rating <= 2) {
+      return 'red'
+    } else if (rating <= 4) {
+      return 'pink'
+    } else if (rating <= 6) {
+      return 'orange'
+    } else if (rating <= 8) {
+      return 'blue'
+    } else {
+      return 'green'
+    }
+  }
   return (
     <Box
-      // w='300px'
       rounded='20px'
       overflow='hidden'
       shadow='xl'
-      // bg={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
-      mt={10}>
-      <Box position='relative'>
-        <Image
-          src={image}
-          alt='Card Image'
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        />
-        <SlideFade in={isHovered}>
-          <Text
-            fontWeight={400}
-            position='absolute'
-            top='0'
-            maxH='200px'
-            // overflow='scroll'
-            bg='gray.800'
-            color='white'>
-            {description || 'No description available'}
-          </Text>
-        </SlideFade>
-      </Box>
-      <Box p={5}>
-        <Stack align='center'>
-          <Badge variant='subtle' colorScheme='blue' rounded='full' px={2}>
-            {badge}
-          </Badge>
-        </Stack>
-        <Stack my={4}>
-          <Text as='h2' fontWeight={700} fontSize='xl' my={2}>
+      position='relative'
+      // maxW={400}
+    >
+      <Box>
+        <Skeleton
+          isLoaded={!image.includes('null')}
+          minH={{ sm: '350px', md: '450px' }}>
+          <Image src={image} alt='MovieCard Image' />
+        </Skeleton>
+        <Badge
+          d='flex'
+          justifyContent='center'
+          alignItems='center'
+          width='100%'
+          fontSize='md'
+          color='black'
+          colorScheme={getRatingColor(rating)}
+          py={2}
+          textAlign='center'>
+          Average Rating: {rating}{' '}
+          <Icon as={rating < 5.5 ? BiDislike : BiLike} w={7} h={7} p={1} />
+        </Badge>
+        <Box
+          px={{ base: 2, md: 4 }}
+          d='flex'
+          flexDir='column'
+          justifyContent='space-between'
+          alignItems='center'
+          position='relative'>
+          <Text as='h2' fontWeight={700} fontSize='2xl' lineHeight='1.2' py={2}>
             {title}
           </Text>
-        </Stack>
-
-        <Flex>
-          <Spacer />
-          <Button variant='solid' colorScheme='blue' size='sm'>
-            {button}
-          </Button>
-        </Flex>
+          <Box h={toggle ? 'auto' : 150}>
+            <Text
+              fontWeight={400}
+              minH={100}
+              h={toggle ? 'auto' : 100}
+              overflow={toggle ? 'auto' : 'hidden'}
+              pb='45px'>
+              {description || 'No description available'}
+            </Text>
+          </Box>
+        </Box>
+      </Box>
+      <Box position='absolute' bottom={0} right={0} w='100%'>
+        <Button
+          variant='solid'
+          colorScheme='blue'
+          fontWeight={900}
+          fontSize={{ base: 'sm', md: 'md' }}
+          w='100%'
+          rounded='none'
+          onClick={() => setToggle(!toggle)}>
+          Read {toggle ? 'less' : 'more'}
+        </Button>
       </Box>
     </Box>
   )
@@ -95,9 +119,8 @@ const Home: NextPage = () => {
       const response = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=06cbaaa0bc746189acc7b951e418cf85&language=en-US&query=${searchTerm}&page=1&include_adult=false`
       )
+
       const movieData = await response.json()
-      // waits until the request completes...
-      console.log(movieData.results)
       setMovies(movieData.results)
     }
 
@@ -142,24 +165,28 @@ const Home: NextPage = () => {
           />
         </Box>
       </FormControl>
-      <SimpleGrid spacing={12} columns={3} p={6}>
+      <Grid
+        gridGap={{ base: 2, md: 12 }}
+        gridTemplateColumns='repeat(auto-fit, minmax(20rem, 1fr))'
+        justifyItems='center'
+        p={{ base: 2, md: 6 }}
+        w='100%'>
         {Array.isArray(movies) &&
           movies.map(
             (
               { title, overview, release_date, poster_path, vote_average },
               idx
             ) => (
-              <Card
+              <MovieCard
                 key={idx}
                 title={title}
                 description={overview}
                 image={`${IMG_API}${poster_path}`}
                 badge={vote_average}
-                button='Read more'
               />
             )
           )}
-      </SimpleGrid>
+      </Grid>
     </Box>
   )
 }
