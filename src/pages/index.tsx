@@ -2,8 +2,6 @@ import {
   Badge,
   Box,
   Button,
-  FormControl,
-  FormLabel,
   Grid,
   Heading,
   Icon,
@@ -16,7 +14,14 @@ import {
 import type { NextPage } from 'next'
 // import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { BiDislike, BiLike } from 'react-icons/bi'
+import {
+  BiDizzy,
+  BiHappy,
+  BiHappyHeartEyes,
+  BiMeh,
+  BiMehBlank,
+  BiSmile,
+} from 'react-icons/bi'
 import { IoMdSearch } from 'react-icons/io'
 
 const SearchIcon = () => <Icon as={IoMdSearch} />
@@ -26,71 +31,81 @@ type MovieCardProps = {
   image: string
   title: string
   description: string
+  date: string
 }
-const MovieCard = ({ badge, image, title, description }: MovieCardProps) => {
+const MovieCard = ({
+  badge,
+  image,
+  title,
+  description,
+  date,
+}: MovieCardProps) => {
   const [toggle, setToggle] = useState(false)
+  const year = date.slice(0, 4)
+
   const rating = parseFloat(badge)
   const getRatingColor = (rating: number) => {
     // 1-2: red, 2-4: pink, 4-6: orange, 6-8: blue, 8-10: green
-    if (rating <= 2) {
-      return 'red'
-    } else if (rating <= 4) {
-      return 'pink'
-    } else if (rating <= 6) {
-      return 'orange'
+    if (rating === 0) {
+      return { color: 'none', icon: BiMehBlank }
+    }
+    if (rating <= 3.5) {
+      return { color: 'yellow', icon: BiDizzy }
+    } else if (rating <= 5.5) {
+      return { color: 'pink', icon: BiMeh }
+    } else if (rating <= 7) {
+      return { color: 'purple', icon: BiSmile }
     } else if (rating <= 8) {
-      return 'blue'
+      return { color: 'green', icon: BiHappy }
     } else {
-      return 'green'
+      return { color: 'blue', icon: BiHappyHeartEyes }
     }
   }
+  const ratingInfo = getRatingColor(rating)
   return (
-    <Box
-      rounded='20px'
-      overflow='hidden'
-      shadow='xl'
-      position='relative'
-      // maxW={400}
-    >
-      <Box>
-        <Skeleton
-          isLoaded={!image.includes('null')}
-          minH={{ sm: '350px', md: '450px' }}>
-          <Image src={image} alt='MovieCard Image' />
-        </Skeleton>
-        <Badge
-          d='flex'
-          justifyContent='center'
-          alignItems='center'
-          width='100%'
-          fontSize='md'
-          color='black'
-          colorScheme={getRatingColor(rating)}
-          py={2}
-          textAlign='center'>
-          Average Rating: {rating}{' '}
-          <Icon as={rating < 5.5 ? BiDislike : BiLike} w={7} h={7} p={1} />
-        </Badge>
-        <Box
-          px={{ base: 2, md: 4 }}
-          d='flex'
-          flexDir='column'
-          justifyContent='space-between'
-          alignItems='center'
-          position='relative'>
-          <Text as='h2' fontWeight={700} fontSize='2xl' lineHeight='1.2' py={2}>
-            {title}
+    <Box rounded='20px' overflow='hidden' shadow='xl' position='relative'>
+      <Skeleton
+        isLoaded={!image.includes('null')}
+        // minH={{ sm: '350px', md: '450px' }}
+      ></Skeleton>
+      <Image
+        src={image}
+        alt='MovieCard Image'
+        fallbackSrc='https://via.placeholder.com/1250'
+      />
+      <Badge
+        d='flex'
+        justifyContent='center'
+        alignItems='center'
+        width='100%'
+        fontSize='md'
+        color='black'
+        colorScheme={ratingInfo.color}
+        py={3}
+        textAlign='center'>
+        Average Rating: {rating === 0 ? 'N/A' : rating}{' '}
+        {rating !== 0 && <Icon as={ratingInfo.icon} w={6} h={6} mx={1} />}
+      </Badge>
+      <Box
+        px={{ base: 2, md: 4 }}
+        d='flex'
+        flexDir='column'
+        justifyContent='space-between'
+        alignItems='center'
+        position='relative'>
+        <Text as='h2' fontWeight={700} fontSize='2xl' lineHeight='1.2' py={2}>
+          {title}
+        </Text>
+        <Text>{year}</Text>
+        <Box h={toggle ? 'auto' : 150}>
+          <Text
+            fontWeight={400}
+            minH={100}
+            h={toggle ? 'auto' : 100}
+            overflow={toggle ? 'auto' : 'hidden'}
+            pb='45px'>
+            {description || 'No description available'}
           </Text>
-          <Box h={toggle ? 'auto' : 150}>
-            <Text
-              fontWeight={400}
-              minH={100}
-              h={toggle ? 'auto' : 100}
-              overflow={toggle ? 'auto' : 'hidden'}
-              pb='45px'>
-              {description || 'No description available'}
-            </Text>
-          </Box>
         </Box>
       </Box>
       <Box position='absolute' bottom={0} right={0} w='100%'>
@@ -129,24 +144,28 @@ const Home: NextPage = () => {
 
   const IMG_API = 'https://image.tmdb.org/t/p/w1280'
 
+  const handleSubmit: React.FormEventHandler = e => {
+    e.preventDefault()
+    setSearchTerm(inputTerm)
+    setInputTerm('')
+  }
+
   return (
     <Box>
       <Heading textAlign='center' fontSize='4rem' py={10}>
         Movies!
       </Heading>
 
-      <FormControl
-        id='first-name'
+      {/* TODO: Create separate component with stored logic */}
+      <Box
+        as='form'
         p={10}
         d='flex'
         flexDir='column'
         justifyContent='center'
-        onSubmit={() => {
-          setSearchTerm(inputTerm)
-          setInputTerm('')
-        }}
-        alignItems='center'>
-        <FormLabel>Search for movies</FormLabel>
+        alignItems='center'
+        onSubmit={handleSubmit}>
+        <Text as='h2'>Search for movies</Text>
         <Box d='flex'>
           <Input
             placeholder='Ex., Captain Marvel'
@@ -157,20 +176,19 @@ const Home: NextPage = () => {
           <IconButton
             colorScheme='blue'
             aria-label='Search database'
+            onClick={handleSubmit}
             icon={<SearchIcon />}
-            onClick={() => {
-              setSearchTerm(inputTerm)
-              setInputTerm('')
-            }}
           />
         </Box>
-      </FormControl>
+      </Box>
+
       <Grid
         gridGap={{ base: 2, md: 12 }}
         gridTemplateColumns='repeat(auto-fit, minmax(20rem, 1fr))'
         justifyItems='center'
         p={{ base: 2, md: 6 }}
         w='100%'>
+        {console.log(movies)}
         {Array.isArray(movies) &&
           movies.map(
             (
@@ -183,6 +201,7 @@ const Home: NextPage = () => {
                 description={overview}
                 image={`${IMG_API}${poster_path}`}
                 badge={vote_average}
+                date={release_date}
               />
             )
           )}
