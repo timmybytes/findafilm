@@ -8,7 +8,6 @@ import {
   IconButton,
   Image,
   Input,
-  Skeleton,
   Text,
 } from '@chakra-ui/react'
 import type { NextPage } from 'next'
@@ -63,15 +62,16 @@ const MovieCard = ({
   }
   const ratingInfo = getRatingColor(rating)
   return (
-    <Box rounded='20px' overflow='hidden' shadow='xl' position='relative'>
-      <Skeleton
-        isLoaded={!image.includes('null')}
-        // minH={{ sm: '350px', md: '450px' }}
-      ></Skeleton>
+    <Box
+      rounded='20px'
+      overflow='hidden'
+      shadow='xl'
+      position='relative'
+      maxW={350}>
       <Image
         src={image}
         alt='MovieCard Image'
-        fallbackSrc='https://via.placeholder.com/1250'
+        fallbackSrc='https://via.placeholder.com/350x500.webp?text=No+Cover+Art'
       />
       <Badge
         d='flex'
@@ -184,7 +184,7 @@ const Home: NextPage = () => {
 
       <Grid
         gridGap={{ base: 2, md: 12 }}
-        gridTemplateColumns='repeat(auto-fit, minmax(20rem, 1fr))'
+        gridTemplateColumns='repeat(auto-fit, minmax(15rem, 1fr))'
         justifyItems='center'
         p={{ base: 2, md: 6 }}
         w='100%'>
