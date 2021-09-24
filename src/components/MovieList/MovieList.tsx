@@ -1,5 +1,5 @@
-import React from 'react'
 import { Grid } from '@chakra-ui/react'
+import React from 'react'
 import { MovieCard } from '../MovieCard/MovieCard'
 
 type MovieListProps = {
@@ -14,14 +14,15 @@ type MovieListProps = {
   ]
 }
 
-const MovieList = ({ movies }: MovieListProps) => {
+export const MovieList = ({ movies }: any) => {
   const IMG_API = 'https://image.tmdb.org/t/p/w1280'
+  console.log(movies)
   return (
     <Grid
-      gridGap={{ base: 2, md: 12 }}
+      gridGap={{ base: 2, md: 2 }}
       gridTemplateColumns='repeat(auto-fit, minmax(15rem, 1fr))'
       justifyItems='center'
-      p={{ base: 2, md: 6 }}
+      p={{ base: 4, md: 6 }}
       w='100%'>
       {Array.isArray(movies) &&
         movies.map(
@@ -35,7 +36,7 @@ const MovieList = ({ movies }: MovieListProps) => {
               description={overview}
               image={`${IMG_API}${poster_path}`}
               badge={vote_average}
-              date={release_date}
+              date={release_date || '0000'}
             />
           )
         )}

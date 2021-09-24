@@ -3,8 +3,16 @@ import { createContext, useEffect, useState } from 'react'
 // type MoviesProps = []
 // const movies: MoviesProps = []
 
-const initialQueue = { queue: [] }
-export const QueueContext = createContext(initialQueue)
+const initialQueue = [
+  {
+    title: 'Movie',
+    description: 'Description',
+    image: 'Cover',
+    date: 'Date',
+    vote: 5.5,
+  },
+]
+export const QueueContext = createContext(undefined)
 
 type Props = {
   children: React.ReactNode
@@ -27,8 +35,7 @@ export const QueueProvider = ({ children }: Props) => {
   }, [searchTerm])
 
   return (
-    // @ts-ignore FIXME:
-    <QueueContext.Provider value={{ searchTerm, setSearchTerm, queue }}>
+    <QueueContext.Provider value={{ searchTerm, setSearchTerm }}>
       {children}
     </QueueContext.Provider>
   )

@@ -1,18 +1,10 @@
-import {
-  Box,
-  Grid,
-  Heading,
-  Icon,
-  IconButton,
-  Input,
-  Text,
-} from '@chakra-ui/react'
+import { Box, Heading, Icon, IconButton, Input, Text } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 // import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { IoMdSearch } from 'react-icons/io'
 import { MovieCard } from '../components/MovieCard/MovieCard'
-import { SearchBar } from '../components/SearchBar/SearchBar'
+import { MovieList } from '../components/MovieList/MovieList'
 
 const SearchIcon = () => <Icon as={IoMdSearch} />
 
@@ -48,7 +40,7 @@ const Home: NextPage = () => {
       </Heading>
 
       {/* TODO: Create separate component with stored logic */}
-      {/* <Box
+      <Box
         as='form'
         p={10}
         d='flex'
@@ -71,33 +63,16 @@ const Home: NextPage = () => {
             icon={<SearchIcon />}
           />
         </Box>
-      </Box> */}
+      </Box>
 
-      <SearchBar />
-
-      <Grid
+      {/* <Grid
         gridGap={{ base: 2, md: 12 }}
         gridTemplateColumns='repeat(auto-fit, minmax(15rem, 1fr))'
         justifyItems='center'
         p={{ base: 2, md: 6 }}
-        w='100%'>
-        {Array.isArray(movies) &&
-          movies.map(
-            (
-              { title, overview, release_date, poster_path, vote_average },
-              idx
-            ) => (
-              <MovieCard
-                key={idx}
-                title={title}
-                description={overview}
-                image={`${IMG_API}${poster_path}`}
-                badge={vote_average}
-                date={release_date}
-              />
-            )
-          )}
-      </Grid>
+        w='100%'> */}
+      <MovieList movies={movies} />
+      {/* </Grid> */}
     </Box>
   )
 }
