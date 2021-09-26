@@ -16,7 +16,6 @@ type MovieListProps = {
 
 export const MovieList = ({ movies }: any) => {
   const IMG_API = 'https://image.tmdb.org/t/p/w1280'
-  console.log(movies)
   return (
     <Grid
       gridGap={{ base: 2, md: 2 }}
