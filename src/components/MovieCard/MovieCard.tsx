@@ -39,13 +39,12 @@ export const MovieCard = ({
       position='relative'
       maxW={350}
       display='grid'
-      gridTemplateRows='1.3fr 1fr' // Important for cover art size consistency
+      gridTemplateRows='2fr 1.3fr' // Important for cover art size consistency
     >
       {/* Cover Art */}
       <Image
         src={image}
         alt='MovieCard Image'
-        // h='100%'
         fallbackSrc='https://via.placeholder.com/350x500.webp?text=No+Cover+Art'
       />
       {/* Meta Data */}
@@ -55,11 +54,13 @@ export const MovieCard = ({
         justifyContent='stretch'
         alignItems='stretch'
         w='100%'
+        h='100%'
         // Expand movie description when toggled
         sx={
           toggle
             ? {
-                background: colorMode === 'dark' ? 'grey.800' : 'white',
+                // Prevent transparent bg bleed with expaned description
+                // background: colorMode === 'dark' ? 'grey.800' : 'white',
                 position: 'absolute',
                 top: 0,
                 left: 0,
@@ -68,7 +69,6 @@ export const MovieCard = ({
             : {}
         }>
         <Badge
-          bg={toggle ? 'gray.800' : ''}
           color={toggle ? 'white' : 'black'}
           d='flex'
           justifyContent='center'
@@ -85,15 +85,14 @@ export const MovieCard = ({
         <Box
           px={{ base: 2, md: 4 }}
           overflow='scroll'
-          bg={toggle ? 'gray.800' : ''}>
+          bg={toggle ? (colorMode === 'dark' ? 'gray.800' : 'white') : ''}>
           <Text as='h2' fontWeight={700} fontSize='2xl' lineHeight='1.2' py={2}>
             {title}
           </Text>
           <Text>{year}</Text>
-          <Box
-          // h={toggle ? '100%' : 150}
-          >
+          <Box>
             <Text
+              color={toggle ? (colorMode === 'dark' ? 'white' : 'black') : ''}
               fontWeight={400}
               minH={100}
               h={toggle ? 'auto' : 100}
