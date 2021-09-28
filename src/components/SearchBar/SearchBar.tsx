@@ -1,49 +1,35 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Icon,
-  Image,
-  Text,
-  Input,
-  IconButton,
-} from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
-import {
-  BiDizzy,
-  BiHappy,
-  BiHappyHeartEyes,
-  BiMeh,
-  BiMehBlank,
-  BiSmile,
-} from 'react-icons/bi'
+import { Box, Button, IconButton, Input, Text } from '@chakra-ui/react'
+import getConfig from 'next/config'
+import { useContext, useEffect, useState } from 'react'
 import { IoMdSearch } from 'react-icons/io'
-
-const SearchIcon = () => <Icon as={IoMdSearch} />
+import { QueueContext } from '../../context/QueueContext'
+import { usePopular } from '../../hooks/usePopular'
+import { useTopRated } from '../../hooks/useTopRated'
+const { publicRuntimeConfig } = getConfig()
 
 export const SearchBar = () => {
-  const [movies, setMovies] = useState([])
-  const [inputTerm, setInputTerm] = useState('')
+  const popMovies = usePopular()
+  const topMovies = useTopRated()
+  const { setMovies } = useContext(QueueContext)
+  const [inputValue, setInputValue] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-  const IMG_API = 'https://image.tmdb.org/t/p/w1280'
 
   useEffect(() => {
     async function fetchMovies(searchTerm: string) {
       const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=06cbaaa0bc746189acc7b951e418cf85&language=en-US&query=${searchTerm}&page=1&include_adult=false`
+        `https://api.themoviedb.org/3/search/movie?api_key=${publicRuntimeConfig.API_KEY}&language=en-US&query=${searchTerm}&page=1&include_adult=false`
       )
-
       const movieData = await response.json()
       setMovies(movieData.results)
     }
 
     fetchMovies(searchTerm)
-  }, [searchTerm])
+  }, [searchTerm, setMovies])
 
   const handleSubmit: React.FormEventHandler = e => {
     e.preventDefault()
-    setSearchTerm(inputTerm)
-    setInputTerm('')
+    setSearchTerm(inputValue)
+    setInputValue('')
   }
 
   return (
@@ -51,24 +37,56 @@ export const SearchBar = () => {
       as='form'
       p={10}
       d='flex'
+      gridGap={2}
       flexDir='column'
       justifyContent='center'
       alignItems='center'
       onSubmit={handleSubmit}>
-      <Text as='h2'>Search for movies</Text>
-      <Box d='flex'>
+      <Box
+        d='flex'
+        gridGap={2}
+        flexWrap='nowrap'
+        justifyContent='center'
+        alignItems='center'>
+        <Text
+          as='h2'
+          whiteSpace='nowrap'
+          fontSize={{ base: '1.5rem', md: '2rem' }}
+          fontWeight='thin'>
+          Search for movies
+        </Text>
+        {/* TODO: Add optional cast lookup - will need a different kind of card */}
+        {/* <Select maxW='100px'>
+          <option value='title'>Title</option>
+          <option value='cast-or-crew'>Cast or Crew</option>
+        </Select> */}
+      </Box>
+      <Box d='flex' gridGap={2}>
         <Input
           placeholder='Ex., Captain Marvel'
           maxW='400px'
-          value={inputTerm}
-          onChange={e => setInputTerm(e.target.value)}
+          value={inputValue}
+          my={2}
+          onChange={e => setInputValue(e.target.value)}
         />
         <IconButton
+          my={2}
           colorScheme='blue'
           aria-label='Search database'
           onClick={handleSubmit}
           icon={<IoMdSearch />}
         />
+      </Box>
+      <Box d='flex' gridGap={2}>
+        <Button colorScheme='blue' my={2} onClick={() => setMovies(popMovies)}>
+          Popular Movies
+        </Button>
+        <Button
+          colorScheme='yellow'
+          my={2}
+          onClick={() => setMovies(topMovies)}>
+          Top Movies
+        </Button>
       </Box>
     </Box>
   )

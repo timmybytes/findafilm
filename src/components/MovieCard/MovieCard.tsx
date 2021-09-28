@@ -1,7 +1,6 @@
 import {
   Badge,
   Box,
-  Button,
   Heading,
   Icon,
   Image,
@@ -13,9 +12,15 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { getRatingColor } from '../../utils/helpers'
+import { useCredits } from '../../hooks/useCredits'
+import { useMovie } from '../../hooks/useMovie'
+import { coverArt, getRatingColor, getYear } from '../../utils/helpers'
+import { CastTable } from './CastTable'
+import { CrewTable } from './CrewTable'
+import { GenreBadges } from './GenreBadges'
 
 type MovieCardProps = {
+  id: number
   badge: string
   image: string
   title: string
@@ -29,134 +34,82 @@ export const MovieCard = ({
   title,
   description,
   date,
+  id,
 }: MovieCardProps) => {
   const [toggle, setToggle] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const year = date.slice(0, 4)
+  const cover = coverArt(image, title)
+  const year = getYear(date)
   const rating = parseFloat(badge)
   const ratingInfo = getRatingColor(rating)
 
+  // @ts-ignore
+  const { genres } = useMovie(id)
+  const { cast, crew }: any = useCredits(id)
+
+  const containerProps = {
+    overflow: 'hidden',
+    shadow: 'xl',
+    minWidth: '100%',
+    maxWidth: 350,
+    rounded: 'md',
+    onClick: () => setToggle(!toggle),
+  }
+
+  const badgeProps = {
+    d: 'flex',
+    top: 0,
+    right: 0,
+    m: 2,
+    rounded: 'md',
+    py: 1,
+    px: 2,
+    colorScheme: rating === 0 ? 'gray' : ratingInfo.color,
+  }
+
   return (
-    <Box overflow='hidden' shadow='xl' position='relative' maxW={350}>
-      {/* Cover Art */}
-      <Image
-        src={image}
-        alt='MovieCard Image'
-        fallbackSrc='https://via.placeholder.com/350x500.webp?text=No+Cover+Art'
-        minH={367}
-      />
-      {/* Meta Data */}
-      <Box
-        d='grid'
-        gridTemplateRows='minmax(48px, min-content)'
-        justifyContent='stretch'
-        alignItems='stretch'
-        w='100%'
-        h='100%'
-        // Expand movie description when toggled
-        // sx={
-        //   toggle
-        //     ? {
-        //         // Prevent transparent bg bleed with expaned description
-        //         // background: colorMode === 'dark' ? 'grey.800' : 'white',
-        //         position: 'absolute',
-        //         top: 0,
-        //         left: 0,
-        //         h: '100%',
-        //       }
-        //     : {}
-        // }
-      >
-        <Badge
-          // color={toggle ? 'white' : 'black'}
-          d='flex'
-          justifyContent='center'
-          alignItems='center'
-          width='100%'
-          maxH='48px'
-          fontSize='md'
-          colorScheme={ratingInfo.color}
-          py={3}
-          textAlign='center'>
-          Average Rating: {rating === 0 ? 'N/A' : rating}{' '}
-          {rating !== 0 && <Icon as={ratingInfo.icon} w={6} h={6} mx={1} />}
-        </Badge>
-        <Box
-          px={{ base: 2, md: 4 }}
-          overflow='scroll'
-          // bg={toggle ? (colorMode === 'dark' ? 'gray.800' : 'white') : ''}
-        >
-          <Text as='h2' fontWeight={700} fontSize='2xl' lineHeight='1.2' py={4}>
-            {title}
-          </Text>
-          <Text>{year}</Text>
-          {/* <Box>
-            <Text
-              // color={toggle ? (colorMode === 'dark' ? 'white' : 'black') : ''}
-              fontWeight={400}
-              minH={100}
-              // h={toggle ? 'auto' : 100}
-              // overflow={toggle ? 'auto' : 'hidden'}
-              pb='45px'
-              maxH='54px'>
-              {description || 'No description available'}
-            </Text>
-          </Box> */}
-        </Box>
-      </Box>
-      <Box position='absolute' bottom={0} right={0} w='100%' d='flex'>
-        <Button
-          variant='outline'
-          bg='white'
-          colorScheme='blue'
-          fontWeight={900}
-          fontSize={{ base: 'sm', md: 'md' }}
-          w='100%'
-          rounded='none'
-          onClick={() => setToggle(!toggle)}>
-          Read {toggle ? 'less' : 'more'}
-        </Button>
-        <Button
-          variant='solid'
-          colorScheme='blue'
-          fontWeight={900}
-          fontSize={{ base: 'sm', md: 'md' }}
-          w='100%'
-          rounded='none'
-          // TODO: Add queue context and click handler
-        >
-          Add
-        </Button>
-      </Box>
+    <Box pos='relative' {...containerProps}>
+      <Image src={cover} alt={`${title}`} minH={367} loading='lazy' />
+      <Badge position='absolute' fontSize='md' {...badgeProps}>
+        {rating > 0 ? rating : 'N/A'}{' '}
+        <Icon as={ratingInfo.icon} w={6} h={6} mx={1} />
+      </Badge>
       <Modal
         isOpen={toggle}
         onClose={() => setToggle(!toggle)}
         scrollBehavior='inside'
         isCentered>
         <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <Box p={4}>
+        <ModalContent overflow='scroll' p={4}>
+          <ModalCloseButton color='white' bg='blue.600' p={2} rounded='full' />
+          {!cover.includes('placeholder') && (
             <Image
-              src={image}
-              alt='MovieCard Image'
-              fallbackSrc='https://via.placeholder.com/350x500.webp?text=No+Cover+Art'
+              objectFit='cover'
+              w='100%'
+              maxH='300'
+              src={cover}
+              alt={`${title}`}
+              objectPosition='center -50px'
+              loading='lazy'
             />
-            <Heading as='h2' py={4}>
-              {title}
-            </Heading>
-            <Box
-              d='flex'
-              justifyContent='flex-start'
-              alignItems='center'
-              gridGap={2}>
-              <Text fontWeight='bold'>({year || 'No year available'})</Text>
-              <Badge colorScheme={ratingInfo.color}>
-                {rating || 'No rating available'}
-              </Badge>
-            </Box>
-            <Text>{description || 'No description available'}</Text>
+          )}
+          <Heading as='h2' pt={4}>
+            {title}
+          </Heading>
+          <Box
+            d='flex'
+            justifyContent='flex-start'
+            alignItems='center'
+            flexWrap='wrap'>
+            <Text fontWeight='bold'>({year})</Text>
+            <Badge {...badgeProps} colorScheme={ratingInfo.color}>
+              {rating > 0 ? `Average Rating: ${rating}` : 'No rating available'}
+            </Badge>
           </Box>
+          {genres && <GenreBadges genres={genres} />}
+          <Text>{description || 'No description available'}</Text>
+          {cast && <CastTable cast={cast} />}
+          {crew && <CrewTable crew={crew} />}
         </ModalContent>
       </Modal>
     </Box>
