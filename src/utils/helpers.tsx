@@ -1,6 +1,12 @@
+import { IconType } from 'react-icons/lib'
 import { BiHappy, BiHappyHeartEyes, BiMeh, BiMehBlank } from 'react-icons/bi'
 
-export const getRatingColor = (rating: number) => {
+type RatingColorType = {
+  color: string
+  icon: IconType
+}
+
+export const getRatingColor = (rating: number): RatingColorType => {
   if (rating === 0) {
     return { color: 'white', icon: BiMehBlank }
   }
@@ -13,7 +19,7 @@ export const getRatingColor = (rating: number) => {
   }
 }
 
-export const getYear = (date: string) => {
+export const getYear = (date: string): string => {
   const dateYear = date.slice(0, 4)
   if (dateYear === '0000') {
     return 'Unknown'
@@ -21,7 +27,7 @@ export const getYear = (date: string) => {
   return dateYear
 }
 
-export const coverArt = (img: string, title: string) => {
+export const coverArt = (img: string, title: string): string => {
   if (img.includes('null')) {
     return `https://via.placeholder.com/350x500.webp?text=${title
       .split(' ')

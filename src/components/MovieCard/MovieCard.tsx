@@ -8,8 +8,12 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalOverlay,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useCredits } from '../../hooks/useCredits'
@@ -35,17 +39,15 @@ export const MovieCard = ({
   description,
   date,
   id,
-}: MovieCardProps) => {
+}: MovieCardProps): React.ReactElement => {
   const [toggle, setToggle] = useState(false)
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const cover = coverArt(image, title)
   const year = getYear(date)
   const rating = parseFloat(badge)
   const ratingInfo = getRatingColor(rating)
 
-  // @ts-ignore
   const { genres } = useMovie(id)
-  const { cast, crew }: any = useCredits(id)
+  const { cast, crew } = useCredits(id)
 
   const containerProps = {
     overflow: 'hidden',
@@ -107,9 +109,59 @@ export const MovieCard = ({
             </Badge>
           </Box>
           {genres && <GenreBadges genres={genres} />}
-          <Text>{description || 'No description available'}</Text>
-          {cast && <CastTable cast={cast} />}
-          {crew && <CrewTable crew={crew} />}
+          <Tabs variant='enclosed' py={4}>
+            <TabList>
+              <Tab>Description</Tab>
+              <Tab>Cast</Tab>
+              <Tab>Crew</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Text>{description || 'No description available'}</Text>
+              </TabPanel>
+              {cast && (
+                <TabPanel>
+                  {' '}
+                  <CastTable cast={cast} />
+                </TabPanel>
+              )}
+              {crew && (
+                <TabPanel>
+                  {' '}
+                  <CrewTable crew={crew} />
+                </TabPanel>
+              )}
+            </TabPanels>
+          </Tabs>
+          {/*
+          // TODO: Scroll back to top button
+            const [scrollPosition, setScrollPosition] = useState(0);
+            const handleScroll = () => {
+              const position = window.pageYOffset;
+              setScrollPosition(position);
+            };
+
+            useEffect(() => {
+              window.addEventListener('scroll', handleScroll, { passive: true });
+
+              return () => {
+                window.removeEventListener('scroll', handleScroll);
+              };
+            }, []);
+
+          {scrollPosition > 500 && (<Link href='/#top'>
+            <Box position='fixed'
+                bottom='20px'
+                right={['16px', '84px']}
+                zIndex={1}
+            >
+                <Image src='images/icons/top.svg'
+                    w='60px'
+                    h='60px'
+                />
+            </Box>
+        </Link>)}
+           */}
         </ModalContent>
       </Modal>
     </Box>

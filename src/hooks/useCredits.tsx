@@ -2,8 +2,47 @@ import { useState, useEffect } from 'react'
 import getConfig from 'next/config'
 const { publicRuntimeConfig } = getConfig()
 
-export const useCredits = (movie_id: number) => {
-  const [credits, setCredits] = useState({})
+type CreditsType = {
+  id?: number
+  cast?: [
+    {
+      adult?: boolean
+      cast_id?: number
+      character?: string
+      credit_id?: string
+      gender?: number
+      id?: number
+      known_for_department?: string
+      name?: string
+      order?: number
+      original_name?: string
+      popularity?: number
+      profile_path?: string | null
+    }
+  ]
+  crew?: [
+    {
+      adult?: boolean
+      credit_id?: string
+      department?: string
+      gender?: number
+      id?: number
+      job?: string
+      known_for_department?: string
+      name?: string
+      original_name?: string
+      popularity?: number
+      profile_path?: string | null
+    }
+  ]
+}
+
+export const useCredits = (movie_id: number): CreditsType => {
+  const [credits, setCredits] = useState<CreditsType>({
+    id: 0,
+    cast: [{}],
+    crew: [{}],
+  })
   useEffect(() => {
     async function fetchMovies() {
       const response = await fetch(

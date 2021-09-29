@@ -2,17 +2,18 @@ import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import React from 'react'
 
 type CastProps = {
-  cast: [
+  cast?: [
     {
-      name: string
-      character: string
+      name?: string
+      character?: string
     }
   ]
 }
 
-export const CastTable = ({ cast }: CastProps) => {
+export const CastTable = ({ cast }: CastProps): React.ReactElement => {
+  console.log(cast)
   return (
-    <Box py={4}>
+    <Box>
       {cast && (
         <Table size='sm' overflow='scroll'>
           <Thead>
@@ -22,8 +23,7 @@ export const CastTable = ({ cast }: CastProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {cast.map((member: any, idx: any) => {
-              member.name
+            {cast.map((member, idx) => {
               return (
                 <Tr key={idx}>
                   <Td>{member.name}</Td>

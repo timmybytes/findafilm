@@ -2,17 +2,17 @@ import { Box, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
 import React from 'react'
 
 type CrewProps = {
-  crew: [
+  crew?: [
     {
-      name: string
-      job: string
+      name?: string
+      job?: string
     }
   ]
 }
 
-export const CrewTable = ({ crew }: CrewProps) => {
+export const CrewTable = ({ crew }: CrewProps): React.ReactElement => {
   return (
-    <Box py={4}>
+    <Box>
       {crew && (
         <Table size='sm' overflow='scroll'>
           <Thead>
@@ -22,7 +22,7 @@ export const CrewTable = ({ crew }: CrewProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {crew.map((member: any, idx: any) => {
+            {crew.map((member, idx) => {
               member.name
               return (
                 <Tr key={idx}>

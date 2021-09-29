@@ -5,7 +5,7 @@ type GenreProps = {
   genres: [{ name: string }]
 }
 
-export const GenreBadges = ({ genres }: GenreProps) => {
+export const GenreBadges = ({ genres }: GenreProps): React.ReactElement => {
   const genrePalette = [
     'blue',
     'red',
@@ -20,7 +20,7 @@ export const GenreBadges = ({ genres }: GenreProps) => {
   return (
     <Box d='flex' gridGap={2} flexWrap='wrap'>
       {genres &&
-        genres.map((genre: any, idx: any) => {
+        genres.map((genre, idx) => {
           return (
             <Badge
               key={idx}
