@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path')
+
 module.exports = {
   reactStrictMode: true,
   images: {
@@ -7,7 +9,7 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'src/styles')],
   },
-  publicRuntimeConfig: {
-    API_KEY: '06cbaaa0bc746189acc7b951e418cf85',
+  env: {
+    apiKey: process.env.NEXT_PUBLIC_TMDB_API_KEY,
   },
 }

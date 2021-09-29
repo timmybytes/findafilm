@@ -1,6 +1,4 @@
-import getConfig from 'next/config'
 import { useEffect, useState } from 'react'
-const { publicRuntimeConfig } = getConfig()
 
 type MovieType = {
   adult?: boolean
@@ -36,11 +34,15 @@ export const useMovie = (movie_id: number): MovieType => {
   const [movie, setMovie] = useState<MovieType>({})
   useEffect(() => {
     async function fetchMovies() {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${publicRuntimeConfig.API_KEY}&language=en-US&page=1`
-      )
-      const movieData = await response.json()
-      setMovie(movieData)
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${process.env.apiKey}&language=en-US&page=1`
+        )
+        const movieData = await response.json()
+        setMovie(movieData)
+      } catch (e) {
+        console.log('Failed to fetch movies', e)
+      }
     }
 
     fetchMovies()
