@@ -6,6 +6,7 @@ type CastProps = {
     {
       name?: string
       character?: string
+      id?: number
     }
   ]
 }
@@ -18,16 +19,24 @@ export const CastTable = ({ cast }: CastProps): React.ReactElement => {
         <Table size='sm' overflow='scroll'>
           <Thead>
             <Tr>
-              <Th>Cast Member</Th>
               <Th>Character</Th>
+              <Th>Cast Member</Th>
             </Tr>
           </Thead>
           <Tbody>
             {cast.map((member, idx) => {
               return (
                 <Tr key={idx}>
-                  <Td>{member.name}</Td>
                   <Td>{member.character}</Td>
+                  <Td>
+                    <a
+                      target='_blank'
+                      href={`https://www.themoviedb.org/person/${member.id}`}
+                      rel='noreferrer'
+                    >
+                      {member.name}
+                    </a>
+                  </Td>
                 </Tr>
               )
             })}

@@ -6,6 +6,7 @@ type CrewProps = {
     {
       name?: string
       job?: string
+      id?: number
     }
   ]
 }
@@ -23,11 +24,16 @@ export const CrewTable = ({ crew }: CrewProps): React.ReactElement => {
           </Thead>
           <Tbody>
             {crew.map((member, idx) => {
-              member.name
               return (
                 <Tr key={idx}>
                   <Td>{member.job}</Td>
-                  <Td>{member.name}</Td>
+                  <a
+                    target='_blank'
+                    href={`https://www.themoviedb.org/person/${member.id}`}
+                    rel='noreferrer'
+                  >
+                    {member.name}
+                  </a>
                 </Tr>
               )
             })}
