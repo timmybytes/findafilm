@@ -9,7 +9,7 @@
 </div>
 
 <div align="center">
-  <!-- <img alt="Netlify" src="https://img.shields.io/netlify/8fda250e-338f-4ad0-b887-dbf08ff7781e"> -->
+  <img alt="Netlify" src="https://img.shields.io/netlify/51c43c6c-5837-4fe7-87f2-32c457ebd445">
   <img alt="GitHub" src="https://img.shields.io/github/license/timmybytes/findafilm">
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/timmybytes/findafilm">
   <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/timmybytes/findafilm">
