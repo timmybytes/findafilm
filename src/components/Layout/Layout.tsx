@@ -7,10 +7,7 @@ type LayoutProps = {
   children?: React.ReactNode
 }
 
-export const Layout = ({
-  children,
-  ...rest
-}: LayoutProps): React.ReactElement => {
+export const Layout = ({ children }: LayoutProps): React.ReactElement => {
   return (
     <Flex
       direction='column'
@@ -18,10 +15,7 @@ export const Layout = ({
       m='0 auto'
       minH='100vh'
       height='98%'
-      // width='100%'
       position='relative'
-      // p={4}
-      {...rest}
     >
       <Header />
       <Main>{children}</Main>

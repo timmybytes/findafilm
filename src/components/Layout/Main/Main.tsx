@@ -4,9 +4,9 @@ type MainProps = {
   children?: React.ReactNode
 }
 
-export const Main = ({ children, ...rest }: MainProps): React.ReactElement => {
+export const Main = ({ children }: MainProps): React.ReactElement => {
   return (
-    <Box as='main' w='100%' {...rest}>
+    <Box as='main' w='100%' mb={{ base: '80px', sm: '48px' }}>
       {children}
     </Box>
   )

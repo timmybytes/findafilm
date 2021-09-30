@@ -22,7 +22,7 @@ export const Header = (): React.ReactElement => {
       <Image
         src='/findafilmHeader.svg'
         alt='find-a-film logo'
-        maxW='400px'
+        maxW={{ base: '300px', sm: '400px' }}
         p={10}
       />
     </Box>
