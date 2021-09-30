@@ -4,7 +4,7 @@ const styles = {
   global: {
     body: {
       // bg: 'blackAlpha.900', TODO: Set Light/Dark palettes
-      color: 'white',
+      // color: 'white',
     },
     a: {
       color: 'teal.500',
