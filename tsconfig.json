@@ -22,7 +22,6 @@
       "@context/*": ["src/context/*"],
       "@hooks/*": ["src/hooks/*"],
       "@pages/*": ["src/pages/*"],
-      "@styles/*": ["src/styles/*"],
       "@theme/*": ["src/theme/*"],
       "@utils/*": ["src/utils/*"],
       "@test/*": ["test/*"],

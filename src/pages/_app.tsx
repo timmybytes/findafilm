@@ -1,16 +1,8 @@
-import { ChakraProvider, extendTheme, ThemeConfig } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import { Layout } from '@components/Layout'
+import { theme } from '@theme/index'
 import type { AppProps } from 'next/app'
 import { QueueProvider } from '../context/QueueContext'
-import '../styles/globals.scss'
-
-// 2. Add your color mode config
-const config: ThemeConfig = {
-  initialColorMode: 'dark',
-  useSystemColorMode: false,
-}
-// 3. extend the theme
-export const theme = extendTheme({ config })
 
 function MyApp({ Component, pageProps }: AppProps): React.ReactElement {
   return (
