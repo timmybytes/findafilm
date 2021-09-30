@@ -1,15 +1,15 @@
 {
-  "name": "movies",
+  "name": "findafilm",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "author": "Timothy Merritt",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/timmybytes/movies.git"
+    "url": "git+https://github.com/timmybytes/findafilm.git"
   },
   "bugs": {
-    "url": "https://github.com/timmybytes/movies/issues"
+    "url": "https://github.com/timmybytes/findafilm/issues"
   },
   "scripts": {
     "dev": "next dev",

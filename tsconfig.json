@@ -20,12 +20,12 @@
     "paths": {
       "@components/*": ["src/components/*"],
       "@context/*": ["src/context/*"],
-      "@pages/*": ["src/pages/*"],
-      "@public/*": ["public/*"],
-      "@test/*": ["test/*"],
-      "@styles/*": ["src/styles/*"],
       "@hooks/*": ["src/hooks/*"],
+      "@pages/*": ["src/pages/*"],
+      "@styles/*": ["src/styles/*"],
+      "@theme/*": ["src/theme/*"],
       "@utils/*": ["src/utils/*"],
+      "@test/*": ["test/*"],
       "@/*": ["src/*"]
     }
   },
