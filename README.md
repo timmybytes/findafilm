@@ -1,4 +1,23 @@
-# findafilm
+<!-- Header Content -->
+
+<h1 align="center">
+  <img src="/public/findafilm.png" width="100%" alt="findafilm Logo" />
+</h1>
+
+<div align="center">
+  <p>🎬 A movie lookup app 🔍</p>
+</div>
+
+<div align="center">
+  <!-- <img alt="Netlify" src="https://img.shields.io/netlify/8fda250e-338f-4ad0-b887-dbf08ff7781e"> -->
+  <img alt="GitHub" src="https://img.shields.io/github/license/timmybytes/findafilm">
+  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/timmybytes/findafilm">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/timmybytes/findafilm">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/timmybytes/findafilm">
+  <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/timmybytes/findafilm">
+</div>
+
+<!-- Main Content -->
 
 findafilm is a Next.js web app written in TypeScript for searching for movies and related data. It uses [TheMovieDB](https://themoviedb.org)'s API to fetch from, [Chakra UI](https://chakra-ui.com) for its UI library, and Jest/Testing Library, Prettier, ESLint, Husky, and Plop for testing, linting, and git hooks.
 
