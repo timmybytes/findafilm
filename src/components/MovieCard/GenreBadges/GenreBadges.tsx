@@ -28,7 +28,8 @@ export const GenreBadges = ({ genres }: GenreProps): React.ReactElement => {
               py={0.5}
               px={1.5}
               mx={0}
-              colorScheme={genrePalette[idx % 4]}>
+              colorScheme={genrePalette[idx % 4]}
+            >
               {genre.name}
             </Badge>
           )

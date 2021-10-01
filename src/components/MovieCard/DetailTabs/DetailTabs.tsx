@@ -1,4 +1,4 @@
-import { Tabs, TabList, Tab, TabPanel, TabPanels, Text } from '@chakra-ui/react'
+import { Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react'
 import { CastTable } from './CastTable'
 import { CrewTable } from './CrewTable'
 

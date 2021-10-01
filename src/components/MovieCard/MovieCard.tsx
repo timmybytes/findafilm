@@ -91,35 +91,3 @@ export const MovieCard = ({
     </Box>
   )
 }
-
-{
-  /*
-// TODO: Scroll back to top button
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-    setScrollPosition(position);
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-{scrollPosition > 500 && (<Link href='/#top'>
-  <Box position='fixed'
-      bottom='20px'
-      right={['16px', '84px']}
-      zIndex={1}
-  >
-      <Image src='images/icons/top.svg'
-          w='60px'
-          h='60px'
-      />
-  </Box>
-</Link>)}
- */
-}

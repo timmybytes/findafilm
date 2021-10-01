@@ -12,7 +12,6 @@ type CastProps = {
 }
 
 export const CastTable = ({ cast }: CastProps): React.ReactElement => {
-  console.log(cast)
   return (
     <Box>
       {cast && (
