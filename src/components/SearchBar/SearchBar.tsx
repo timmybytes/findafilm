@@ -1,32 +1,26 @@
 import { Box, Button, IconButton, Input, Text } from '@chakra-ui/react'
+import { routes, useAxiosFetch } from '@hooks/useAxiosFetch'
 import { useContext, useEffect, useState } from 'react'
 import { IoMdSearch } from 'react-icons/io'
-import { QueueContext } from '../../context/QueueContext'
-import { usePopular } from '../../hooks/usePopular'
-import { useTopRated } from '../../hooks/useTopRated'
+import { DataContext } from '@context/DataContext'
 
 export const SearchBar = (): React.ReactElement => {
-  const popMovies = usePopular()
-  const topMovies = useTopRated()
-  const { setMovies } = useContext(QueueContext)
-  const [inputValue, setInputValue] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
+  const popFetch = useAxiosFetch(routes.popular())
+  const popMovies = popFetch.data?.results
+  const topFetch = useAxiosFetch(routes.topRated())
+  const topMovies = topFetch.data?.results
+  const { setMovies, setIsLoading } = useContext(DataContext)
+  const [inputValue, setInputValue] = useState<string>('')
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const { data, isLoading } = useAxiosFetch(routes.movies(searchTerm))
+  const [pages, setPages] = useState<number | undefined>(0)
 
   useEffect(() => {
-    async function fetchMovies(searchTerm: string) {
-      try {
-        const response = await fetch(
-          `https://api.themoviedb.org/3/search/movie?api_key=${process.env.apiKey}&language=en-US&query=${searchTerm}&page=1&include_adult=false`
-        )
-        const movieData = await response.json()
-        setMovies(movieData.results)
-      } catch (e) {
-        console.log('Failed to fetch movies', e)
-      }
+    if (data !== undefined) {
+      setMovies(data.results)
+      setPages(data.total_pages)
     }
-
-    fetchMovies(searchTerm)
-  }, [searchTerm, setMovies])
+  }, [searchTerm, data, setMovies, isLoading, setIsLoading])
 
   const handleSubmit: React.FormEventHandler = e => {
     e.preventDefault()
@@ -59,11 +53,6 @@ export const SearchBar = (): React.ReactElement => {
         >
           Search for movies
         </Text>
-        {/* TODO: Add optional cast lookup - will need a different kind of card */}
-        {/* <Select maxW='100px'>
-          <option value='title'>Title</option>
-          <option value='cast-or-crew'>Cast or Crew</option>
-        </Select> */}
       </Box>
       <Box d='flex' gridGap={2}>
         <Input
@@ -93,6 +82,7 @@ export const SearchBar = (): React.ReactElement => {
           Top Movies
         </Button>
       </Box>
+      {pages && pages > 0 && <Text>Page 1 of {pages}</Text>}
     </Box>
   )
 }

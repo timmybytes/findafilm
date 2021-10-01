@@ -8,10 +8,9 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react'
+import { useAxiosFetch, routes } from '@hooks/useAxiosFetch'
 import { useState } from 'react'
-import { useCredits } from '../../hooks/useCredits'
-import { useMovie } from '../../hooks/useMovie'
-import { coverArt, getYear } from '../../utils/helpers'
+import { coverArt, getYear } from '@utils/helpers'
 import { DetailTabs } from './DetailTabs'
 import { GenreBadges } from './GenreBadges'
 import { RatingBadge } from './RatingBadge'
@@ -36,8 +35,11 @@ export const MovieCard = ({
   const [toggle, setToggle] = useState(false)
   const cover = coverArt(image, title)
   const year = getYear(date)
-  const { genres } = useMovie(id)
-  const { cast, crew } = useCredits(id)
+  const credits = useAxiosFetch(routes.credits(id))
+  const movie = useAxiosFetch(routes.movie(id))
+  const genres = movie?.data?.genres
+  const cast = credits?.data?.cast
+  const crew = credits?.data?.crew
 
   const containerProps = {
     overflow: 'hidden',

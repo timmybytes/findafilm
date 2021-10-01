@@ -1,11 +1,11 @@
 import { Grid } from '@chakra-ui/react'
 import React, { useContext } from 'react'
-import { QueueContext } from '../../context/QueueContext'
+import { DataContext } from '@context/DataContext'
 import { MovieCard } from '../MovieCard'
 
 export const MovieList = (): React.ReactElement => {
   const IMG_API = 'https://image.tmdb.org/t/p/w1280'
-  const { movies } = useContext(QueueContext)
+  const { movies, isLoading } = useContext(DataContext)
   return (
     <Grid
       gridGap={2}
@@ -14,7 +14,10 @@ export const MovieList = (): React.ReactElement => {
       p={{ base: 4, md: 6 }}
       w='100%'
     >
-      {Array.isArray(movies) &&
+      {isLoading ? (
+        <p>Loading results...</p>
+      ) : (
+        Array.isArray(movies) &&
         movies.map(
           ({
             title,
@@ -34,7 +37,8 @@ export const MovieList = (): React.ReactElement => {
               date={release_date || '0000'}
             />
           )
-        )}
+        )
+      )}
     </Grid>
   )
 }

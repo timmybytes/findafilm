@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
-import { MovieList } from '../components/MovieList/MovieList'
-import { SearchBar } from '../components/SearchBar/SearchBar'
+import { MovieList } from '@components/MovieList/MovieList'
+import { SearchBar } from '@components/SearchBar/SearchBar'
 
 const Home: NextPage = () => {
   return (
