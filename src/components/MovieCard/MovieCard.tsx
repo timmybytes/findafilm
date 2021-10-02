@@ -8,9 +8,9 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react'
-import { useAxiosFetch, routes } from '@hooks/useAxiosFetch'
-import { useState } from 'react'
+import { routes, useAxiosFetch } from '@hooks/useAxiosFetch'
 import { coverArt, getYear } from '@utils/helpers'
+import { useState } from 'react'
 import { DetailTabs } from './DetailTabs'
 import { GenreBadges } from './GenreBadges'
 import { RatingBadge } from './RatingBadge'
@@ -44,15 +44,39 @@ export const MovieCard = ({
   const containerProps = {
     overflow: 'hidden',
     shadow: 'xl',
+    height: 'auto',
     minWidth: '100%',
-    maxWidth: 350,
     rounded: 'md',
     onClick: () => setToggle(!toggle),
   }
 
   return (
-    <Box pos='relative' {...containerProps}>
-      <Image src={cover} alt={`${title}`} minH={367} loading='lazy' />
+    <Box
+      pos='relative'
+      maxWidth={{ base: '200px', md: 350 }}
+      {...containerProps}
+    >
+      <Image
+        src={cover}
+        alt={`${title}`}
+        minH={{ base: 'auto', md: 367 }}
+        pb='30px'
+        loading='lazy'
+      />
+      <Text
+        pos='absolute'
+        bottom='0'
+        fontSize='sm'
+        maxH='42px'
+        whiteSpace='nowrap'
+        overflowX='scroll'
+        fontWeight={800}
+        p={2}
+        textAlign='center'
+        w='100%'
+      >
+        {title}
+      </Text>
       <RatingBadge badge={badge} />
       <Modal
         isOpen={toggle}

@@ -1,6 +1,6 @@
 import { Grid } from '@chakra-ui/react'
-import React, { useContext } from 'react'
 import { DataContext } from '@context/DataContext'
+import React, { useContext } from 'react'
 import { MovieCard } from '../MovieCard'
 
 export const MovieList = (): React.ReactElement => {
@@ -9,7 +9,10 @@ export const MovieList = (): React.ReactElement => {
   return (
     <Grid
       gridGap={2}
-      gridTemplateColumns='repeat(auto-fit, minmax(15rem, 1fr) )'
+      gridTemplateColumns={{
+        base: 'auto auto',
+        md: 'repeat(auto-fit, minmax(15rem, 1fr) )',
+      }}
       justifyItems='center'
       p={{ base: 4, md: 6 }}
       w='100%'
