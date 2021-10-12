@@ -83,6 +83,7 @@ export const MovieCard = ({
         onClose={() => setToggle(!toggle)}
         scrollBehavior='inside'
         isCentered
+        size='2xl'
       >
         <ModalOverlay />
         <ModalContent overflow='scroll' p={4}>
@@ -91,7 +92,6 @@ export const MovieCard = ({
             <Image
               objectFit='cover'
               w='100%'
-              maxH='300'
               src={cover}
               alt={`${title}`}
               objectPosition='center -50px'
