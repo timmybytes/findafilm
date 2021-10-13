@@ -54,8 +54,7 @@ export const MovieCard = ({
     <Box
       pos='relative'
       maxWidth={{ base: '200px', md: 350 }}
-      {...containerProps}
-    >
+      {...containerProps}>
       <Image
         src={cover}
         alt={`${title}`}
@@ -73,8 +72,7 @@ export const MovieCard = ({
         fontWeight={800}
         p={2}
         textAlign='center'
-        w='100%'
-      >
+        w='100%'>
         {title}
       </Text>
       <RatingBadge badge={badge} />
@@ -83,8 +81,7 @@ export const MovieCard = ({
         onClose={() => setToggle(!toggle)}
         scrollBehavior='inside'
         isCentered
-        size='2xl'
-      >
+        size='2xl'>
         <ModalOverlay />
         <ModalContent overflow='scroll' p={4}>
           <ModalCloseButton color='white' bg='blue.600' p={2} rounded='full' />
@@ -105,8 +102,7 @@ export const MovieCard = ({
             d='flex'
             justifyContent='flex-start'
             alignItems='center'
-            flexWrap='wrap'
-          >
+            flexWrap='wrap'>
             <Text fontWeight='bold'>({year})</Text>
             <RatingBadge badge={badge} inner />
           </Box>
