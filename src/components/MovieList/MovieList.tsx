@@ -11,12 +11,12 @@ export const MovieList = (): React.ReactElement => {
       gridGap={2}
       gridTemplateColumns={{
         base: 'auto auto',
-        md: 'repeat(auto-fit, minmax(15rem, 1fr) )',
+        md: 'repeat(auto-fill, minmax(15rem, 1fr) )',
+        lg: 'repeat(auto-fill, minmax(25rem, 1fr))',
       }}
       justifyItems='center'
       p={{ base: 4, md: 6 }}
-      w='100%'
-    >
+      w='100%'>
       {isLoading ? (
         <p>Loading results...</p>
       ) : (
