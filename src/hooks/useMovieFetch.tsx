@@ -95,7 +95,7 @@ export const routes = {
     `https://api.themoviedb.org/3/movie/${movie_id}?api_key=${process.env.apiKey}&language=en-US&page=${page}`,
 }
 
-export const useAxiosFetch = (dataURL: string): IData => {
+export const useMovieFetch = (dataURL: string): IData => {
   const [data, setData] = useState<DataType>()
   const [fetchError, setFetchError] = useState<ErrorType>(null)
   const [isLoading, setIsLoading] = useState<LoadingType>(false)

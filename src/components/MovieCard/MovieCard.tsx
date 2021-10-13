@@ -8,7 +8,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react'
-import { routes, useAxiosFetch } from '@hooks/useAxiosFetch'
+import { routes, useMovieFetch } from '@hooks/useMovieFetch'
 import { coverArt, getYear } from '@utils/helpers'
 import { useState } from 'react'
 import { DetailTabs } from './DetailTabs'
@@ -35,8 +35,8 @@ export const MovieCard = ({
   const [toggle, setToggle] = useState(false)
   const cover = coverArt(image, title)
   const year = getYear(date)
-  const credits = useAxiosFetch(routes.credits(id))
-  const movie = useAxiosFetch(routes.movie(id))
+  const credits = useMovieFetch(routes.credits(id))
+  const movie = useMovieFetch(routes.movie(id))
   const genres = movie?.data?.genres
   const cast = credits?.data?.cast
   const crew = credits?.data?.crew

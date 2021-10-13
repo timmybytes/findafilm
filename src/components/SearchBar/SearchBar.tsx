@@ -1,18 +1,18 @@
 import { Box, Button, IconButton, Input, Text } from '@chakra-ui/react'
 import { DataContext } from '@context/DataContext'
-import { routes, useAxiosFetch } from '@hooks/useAxiosFetch'
+import { routes, useMovieFetch } from '@hooks/useMovieFetch'
 import { useContext, useEffect, useState } from 'react'
 import { IoMdSearch } from 'react-icons/io'
 
 export const SearchBar = (): React.ReactElement => {
-  const popFetch = useAxiosFetch(routes.popular())
+  const popFetch = useMovieFetch(routes.popular())
   const popMovies = popFetch.data?.results
-  const topFetch = useAxiosFetch(routes.topRated())
+  const topFetch = useMovieFetch(routes.topRated())
   const topMovies = topFetch.data?.results
   const { setMovies, setIsLoading, movies } = useContext(DataContext)
   const [inputValue, setInputValue] = useState<string>('')
   const [searchTerm, setSearchTerm] = useState<string>('')
-  const { data, isLoading } = useAxiosFetch(routes.movies(searchTerm))
+  const { data, isLoading } = useMovieFetch(routes.movies(searchTerm))
   const [pages, setPages] = useState<number | undefined>(0)
 
   useEffect(() => {
