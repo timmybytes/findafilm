@@ -1,4 +1,4 @@
-import { Box, Image, Text } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 
 export const Footer = (): React.ReactElement => {
   return (
@@ -8,13 +8,20 @@ export const Footer = (): React.ReactElement => {
       bottom={0}
       w='100%'
       h={{ base: '80px', sm: '48px' }}
-      py={4}
-    >
+      py={4}>
       <a href='https://timmybytes.com' target='_blank' rel='noreferrer'>
         <Box d='flex' gridGap={2} justifyContent='center' alignItems='center'>
-          <Text whiteSpace='nowrap'>Built by </Text>
-          <Image src='/timmybytes.svg' alt='timmybytes logo' maxH='1.75rem' />
-          <Text>&copy; 2021</Text>
+          <Text whiteSpace='nowrap'>
+            Built by{' '}
+            <Text
+              as='a'
+              href='https://timmybytes.com'
+              target='_blank'
+              rel='noopener noreferrer'>
+              Timothy Merritt
+            </Text>
+            ; 2021
+          </Text>
         </Box>
       </a>
     </Box>
