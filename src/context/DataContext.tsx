@@ -40,8 +40,7 @@ export const DataProvider = ({ children }: Props): React.ReactElement => {
 
   return (
     <DataContext.Provider
-      value={{ movies, setMovies, isLoading, setIsLoading }}
-    >
+      value={{ movies, setMovies, isLoading, setIsLoading }}>
       {children}
     </DataContext.Provider>
   )
