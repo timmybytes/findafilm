@@ -9,6 +9,7 @@
 </div>
 
 <div align="center">
+  <!-- Netlify status -->
   <img alt="Netlify" src="https://img.shields.io/netlify/51c43c6c-5837-4fe7-87f2-32c457ebd445">
   <img alt="GitHub" src="https://img.shields.io/github/license/timmybytes/findafilm">
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/timmybytes/findafilm">
